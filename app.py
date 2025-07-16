@@ -46,5 +46,5 @@ def predict():
     except Exception as e:
         return f"Error: {str(e)}"
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000)
