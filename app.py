@@ -4,7 +4,7 @@ import joblib
 from sklearn.metrics import accuracy_score
 import pandas as pd
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Load model
 model = joblib.load('model.pkl')
@@ -46,5 +46,5 @@ def predict():
     except Exception as e:
         return f"Error: {str(e)}"
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(host='0.0.0.0', port=3000)
