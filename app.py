@@ -4,7 +4,7 @@ import joblib
 from sklearn.metrics import accuracy_score
 import pandas as pd
 
-app = Flask(__name__)
+app = Flask(_name_)
 
 # Load model
 model = joblib.load('model.pkl')
@@ -12,7 +12,6 @@ model = joblib.load('model.pkl')
 # Load sample test data to calculate accuracy
 df = pd.read_csv('creditcard.csv')
 df = df.drop(['Time'], axis=1)
-
 X = df.drop('Class', axis=1)
 y = df['Class']
 
@@ -27,7 +26,7 @@ accuracy_percent = round(accuracy * 100, 2)
 
 @app.route('/')
 def index():
-    return render_template('index.html', accuracy=accuracy_percent)
+    return render_template('index.html', accuracy=accuracy_percent, prediction_image=None)
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -38,9 +37,14 @@ def predict():
         final_data = np.array([input_data])
         prediction = model.predict(final_data)[0]
         result = "🚨 Fraudulent" if prediction == 1 else "✅ Legitimate"
-        return render_template('index.html', prediction_text=f"Transaction is: {result}", accuracy=accuracy_percent)
+        # Set image path based on prediction
+        prediction_image = 'fraud.png' if prediction == 1 else 'legitimate.png'
+        return render_template('index.html', 
+                             prediction_text=f"Transaction is: {result}", 
+                             accuracy=accuracy_percent,
+                             prediction_image=prediction_image)
     except Exception as e:
         return f"Error: {str(e)}"
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     app.run(host='0.0.0.0', port=3000)
